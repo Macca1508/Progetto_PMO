@@ -83,9 +83,9 @@ public class Board extends JPanel{
 		if(viewController.getPositionByCurrentPlayer() == lastPosition && !viewController.getDirection())
 			lblListField.get(convertion2(lastPosition)).setIcon(new ImageIcon("immagini/"+lastPosition+".png"));
 		else if(viewController.thereArePlayer(lastPosition)) 
-			lblListField.get(convertion2(lastPosition)).setIcon(new ImageIcon("immagini/"+lastPosition+".png"));
-		else
 			lblListField.get(convertion2(lastPosition)).setIcon(new ImageIcon("immagini/personaggi/"+controlSlot(lastPosition,0)+".png"));
+		else
+			lblListField.get(convertion2(lastPosition)).setIcon(new ImageIcon("immagini/"+lastPosition+".png"));
 		
 	}
 	// Getsisce le immagini nel intero movimento di una pedina 
@@ -107,7 +107,7 @@ public class Board extends JPanel{
 		Set<Integer> col = new HashSet<>();
 		col = viewController.pieceInTheSlots(position);
 		for(int i=0; i<6;i++) {
-			if(i == viewController.getCurrentPlayer().getC().getNumber() && cause==1 && (viewController.getCurrentPlayer().getPosition()!= position))
+			if(i == viewController.getCurrentPlayer().getC().getNumber() && cause==1 && viewController.getCurrentPlayer().getPosition()!= position)
 				result += "1";
 			else {
 				if(col.contains(i))

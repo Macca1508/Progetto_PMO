@@ -50,16 +50,12 @@ public class Controller implements ViewController{
 		field.reset();
 	}
 	
-	public String setMassages() {
-		if(field.getActionSlots().stream().filter(actionSlot-> actionSlot.getSlotName()== this.getPositionByCurrentPlayer()).findFirst().isPresent()) {
-			return field.getActionSlots().stream()
-					    .filter(actionSlot-> actionSlot.getSlotName()== this.getPositionByCurrentPlayer())
-					    .findFirst()
-					    .get()
-					    .message();
-		}
-		else
-		return "";
+	public String setMessages() {
+		return field.getActionSlots().stream()
+				    .filter(actionSlot-> actionSlot.getSlotName()== this.getPositionByCurrentPlayer())
+				    .findFirst()
+				    .get()
+				    .message();
 	}
 	
 	public PieceImp getCurrentPlayer() {
@@ -110,7 +106,7 @@ public class Controller implements ViewController{
 		if(field.getPieces()
 				.stream()
 				.filter(piece -> piece.getPosition()== position)
-				.count() == 0)
+				.count() != 0)
 			return true;
 		else
 			return false;
@@ -131,12 +127,10 @@ public class Controller implements ViewController{
 		return field.leaderBoard().get(number);
 	}
 
-	@Override
 	public int valueDiceTot() {
 		return field.getDiceTot();
 	}
 
-	@Override
 	public boolean getDirection() {
 		return field.getDirection();
 	}

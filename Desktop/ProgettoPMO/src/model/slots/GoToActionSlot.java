@@ -1,7 +1,7 @@
 package model.slots;
 import model.pieces.PieceImp;
 
-public class GoToActionSlot extends Slot implements ActionSlot {
+public class GoToActionSlot extends SlotImp implements ActionSlot {
 	private int pieceTo;
 	
 	public GoToActionSlot(int slotName,int pieceTo) {
@@ -10,7 +10,6 @@ public class GoToActionSlot extends Slot implements ActionSlot {
 	}
 	// Sposta la posizione della pedine che vi è andata sopra nella casella designata 
 	public void action(PieceImp piece) {
-		System.out.println(piece.getName()+" andrà alla casella "+ this.pieceTo);
 		piece.setLastPosition(piece.getPosition());
 		piece.setPosition(this.pieceTo);
 	}

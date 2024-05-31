@@ -99,9 +99,7 @@ public class FieldImp implements Field{
 				piece.moveForwards();
 			else
 				piece.moveBackwards();
-			System.out.println(piece.getName()+" è nella casella numero "+ piece.getPosition());
 		}
-		System.out.println();
 		piece.canThrowDec();
 	}
 	// Controlla se la casella in cui il giocatore è arrivato sia una casella azione
@@ -148,7 +146,7 @@ public class FieldImp implements Field{
 	private void createActionSlot(){
 		for(int i=0;i<FieldImp.nSlot;i++) {
 			if(this.actionSlotPresent(i+1))
-				this.slots.add(new Slot(i+1));
+				this.slots.add(new SlotImp(i+1));
 		}
 	}
 	// Controlla se la casella con un determinato nome esiste già 

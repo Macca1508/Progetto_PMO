@@ -1,7 +1,7 @@
 package model.slots;
 import model.pieces.PieceImp;
 
-public class DoubleResultActionSlot extends Slot implements ActionSlot{
+public class DoubleResultActionSlot extends SlotImp implements ActionSlot{
 
 	public DoubleResultActionSlot(int slotName) {
 		super(slotName);

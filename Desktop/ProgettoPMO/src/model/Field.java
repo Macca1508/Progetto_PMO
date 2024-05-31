@@ -6,12 +6,14 @@ import model.pieces.PieceImp;
 
 public interface Field {
 	void setCurrentPlayer();
-	PieceImp getCurrentPlayer();
 	void goToPlay();
 	void throwDices();
 	void play();
 	void doActions();
-	boolean isWin();
 	void reset();
+	boolean isWin();
+	boolean getDirection();
+	PieceImp getCurrentPlayer();	
 	List<PieceImp> leaderBoard();
+	
 }

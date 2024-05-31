@@ -28,6 +28,9 @@ public class PieceImp extends User implements Piece{
 	public Colors getC() {
 		return c;
 	}
+	public int getPriority() {
+		return priority;
+	}
 	// La pedina si muove in avanti di una posizione 
 	public void moveForwards() {
 		this.position++;
@@ -49,8 +52,5 @@ public class PieceImp extends User implements Piece{
 	}
 	public void setLastPosition(int lastPosition) {
 		this.lastPosition = lastPosition;
-	}
-	public int getPriority() {
-		return priority;
 	}
 }

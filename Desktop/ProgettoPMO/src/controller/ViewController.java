@@ -26,7 +26,7 @@ public interface ViewController {
 	Set<Integer> pieceInTheSlots(int position);
 	PieceImp getCurrentPlayer();
 	PieceImp getPlayerForRank(int number);
-	String setMassages();
+	String setMessages();
 	Color convertiColore(int i);
 	
 }

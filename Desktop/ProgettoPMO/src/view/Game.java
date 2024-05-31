@@ -14,7 +14,6 @@ public class Game extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
 	
-	
 	private List<JLabel> lblListLeaderBoard = new ArrayList<>();
 	private ViewController viewController;
 
@@ -23,11 +22,8 @@ public class Game extends JPanel{
 		viewController.createPiece(players);
 		Board field1 = new Board(viewController);
 		SpringLayout layout = new SpringLayout();
-		
-		for(int i=0,j=1;i<players.size();i+=2) {
+		for(int i=0,j=1;i<players.size();i+=2,j++)
 			lblListLeaderBoard.add(new JLabel(""+(j)+" "+players.get(i)));
-			j++;
-		}
 		this.leaderBoard();
 		JLabel dice1 = new JLabel();
 		JLabel dice2 = new JLabel();
@@ -146,10 +142,8 @@ public class Game extends JPanel{
 	}
 	// Creo una finestra pop-up dove stanpo che azione fare il giocatore
 	public void printActions(Container c) {
-		String message = viewController.setMassages();
-		if(!message.isBlank()) {
-			JOptionPane.showMessageDialog(c,"<html><h1>"+viewController.getCurrentPlayer().getName()+" "+message+"</h1></html>");
-		}
+		String message = viewController.setMessages();
+		JOptionPane.showMessageDialog(c,"<html><h1>"+viewController.getCurrentPlayer().getName()+" "+message+"</h1></html>");
 	}
 	
 	

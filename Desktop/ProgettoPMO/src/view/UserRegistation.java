@@ -66,7 +66,6 @@ public class UserRegistation extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				if(names.size()>= 2){
 					Game r = new Game(c,names,viewController);
-					System.out.println(names);
 					c.removeAll();
 					c.add(r);
 					c.repaint();
