@@ -17,6 +17,7 @@ public class Board extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public static final int delay = 600;
 	private List<JLabel> lblListField = new ArrayList<>();
 	private ViewController viewController;
 	
@@ -124,7 +125,7 @@ public class Board extends JPanel{
         JDialog dialog = pane.createDialog("Spostamento");
         dialog.setLocation(1560, 530);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        Timer timer = new Timer(600, new ActionListener() {
+        Timer timer = new Timer(Board.delay, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dialog.dispose();

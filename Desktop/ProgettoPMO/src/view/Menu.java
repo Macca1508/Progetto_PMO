@@ -36,18 +36,18 @@ public class Menu extends JPanel{
 		
         btnGoToRegistation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UserRegistation r = new UserRegistation(c,viewController);
+				UserRegistation userR = new UserRegistation(c,viewController);
 				c.removeAll();
-				c.add(r);
+				c.add(userR);
 				c.repaint();
 				c.revalidate();
 			}
 		});
         btnRegulation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Regulation p = new Regulation(c,viewController);
+				Regulation reg = new Regulation(c,viewController);
 				c.removeAll();
-				c.add(p);
+				c.add(reg);
 				c.repaint();
 				c.revalidate();
 			}
