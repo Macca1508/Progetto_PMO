@@ -8,7 +8,7 @@ import model.pieces.PieceImp;
 
 public interface ViewController {
 	void startTurn();
-	void createPiece(List<String> players);
+	void createPieces(List<String> players);
 	void reset();
 	void play();
 	void doActions();
@@ -21,12 +21,11 @@ public interface ViewController {
 	boolean ifIsAction();
 	boolean isWin();
 	boolean thereArePlayer(int position);	
-	boolean isCurrentPlayer(int number);
 	boolean getDirection();
 	Set<Integer> pieceInTheSlots(int position);
 	PieceImp getCurrentPlayer();
 	PieceImp getPlayerForRank(int number);
 	String setMessages();
-	Color convertiColore(int i);
+	Color colorConverter(int i);
 	
 }

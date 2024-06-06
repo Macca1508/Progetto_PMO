@@ -11,12 +11,16 @@ import java.awt.event.ActionListener;
 public class Regulation extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
+	private SpringLayout layout;
+	private JLabel lblRegulation;
+	private JButton btnExit;
+	private JButton btnGoToRegistation;
 
 	public Regulation(Container c,ViewController viewController) {
-		SpringLayout layout = new SpringLayout();
-		JLabel lblRegulation = new JLabel();
-		JButton btnExit = new JButton("Esci");
-		JButton btnGoToRegistation = new JButton("Registrazione utenti");
+		layout = new SpringLayout();
+		lblRegulation = new JLabel();
+		btnExit = new JButton("Esci");
+		btnGoToRegistation = new JButton("Registrazione utenti");
 		
 		this.setBackground(Color.WHITE);
 		this.setLayout(layout);

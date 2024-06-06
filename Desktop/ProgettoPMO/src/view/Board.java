@@ -108,7 +108,7 @@ public class Board extends JPanel{
 		Set<Integer> col = new HashSet<>();
 		col = viewController.pieceInTheSlots(position);
 		for(int i=0; i<6;i++) {
-			if(i == viewController.getCurrentPlayer().getC().getNumber() && cause==1 && viewController.getCurrentPlayer().getPosition()!= position)
+			if(i == viewController.getCurrentPlayer().getColor().getNumber() && cause==1 && viewController.getCurrentPlayer().getPosition()!= position)
 				result += "1";
 			else {
 				if(col.contains(i))
@@ -120,8 +120,8 @@ public class Board extends JPanel{
 		return result;
 	} 
 	// Serve per realizzare il delay tra uno spostamento e l'altro 
-	public void animation(int pFinale,int pIniziale) {
-		JOptionPane pane = new JOptionPane("Spostamento da "+pIniziale+" a "+ pFinale, JOptionPane.INFORMATION_MESSAGE);
+	public void animation(int finalP,int initialP) {
+		JOptionPane pane = new JOptionPane("Spostamento da "+initialP+" a "+ finalP, JOptionPane.INFORMATION_MESSAGE);
         JDialog dialog = pane.createDialog("Spostamento");
         dialog.setLocation(1560, 530);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

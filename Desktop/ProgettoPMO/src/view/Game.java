@@ -13,25 +13,33 @@ import java.util.List;
 public class Game extends JPanel{ 
 	
 	private static final long serialVersionUID = 1L;
-	
 	private List<JLabel> lblListLeaderBoard = new ArrayList<>();
 	private ViewController viewController;
+	private Board field;
+	private SpringLayout layout;
+	private JLabel dice1;
+	private JLabel dice2;
+	private JLabel result;
+	private JLabel equals;
+	private JButton btnBackToMenu;
+	private JButton btnPlay;
+	private JButton btnExit;
 
 	public Game(Container c,List<String> players,ViewController viewController){
 		this.viewController = viewController;
-		viewController.createPiece(players);
-		Board field1 = new Board(viewController);
-		SpringLayout layout = new SpringLayout();
+		viewController.createPieces(players);
+		field = new Board(viewController);
+		layout = new SpringLayout();
 		for(int i=0,j=1;i<players.size();i+=2,j++)
 			lblListLeaderBoard.add(new JLabel(""+(j)+" "+players.get(i)));
 		this.leaderBoard();
-		JLabel dice1 = new JLabel();
-		JLabel dice2 = new JLabel();
-		JLabel result = new JLabel();
-		JLabel equals = new JLabel("=");
-		JButton btnBackToMenu = new JButton("Torna al Menu");
-		JButton btnPlay = new JButton("Gioca");
-		JButton btnExit = new JButton("Esci");
+		dice1 = new JLabel();
+		dice2 = new JLabel();
+		result = new JLabel();
+		equals = new JLabel("=");
+		btnBackToMenu = new JButton("Torna al Menu");
+		btnPlay = new JButton("Gioca");
+		btnExit = new JButton("Esci");
 		
 		this.setBackground(Color.WHITE);
 		this.setPreferredSize(new Dimension(800,950));
@@ -78,11 +86,11 @@ public class Game extends JPanel{
 				dice1.setIcon(new ImageIcon("immagini/facceDadi/"+viewController.valueDice1()+".png"));
 				dice2.setIcon(new ImageIcon("immagini/facceDadi/"+viewController.valueDice2()+".png"));
 				result.setText("" +(viewController.valueDice1()+viewController.valueDice2()));
-				field1.updateImages(c);
+				field.updateImages(c);
 				if(viewController.ifIsAction()) {
 					printActions(c);
 					viewController.doActions();
-					field1.imagesManagement(viewController.getPositionByCurrentPlayer(),viewController.getLastPositionByCurrentPlayer());
+					field.imagesManagement(viewController.getPositionByCurrentPlayer(),viewController.getLastPositionByCurrentPlayer());
 				}
 				leaderBoard();
 				if(viewController.isWin()) {
@@ -102,7 +110,7 @@ public class Game extends JPanel{
 		this.add(result);
 		for(JLabel  lbl:lblListLeaderBoard)
 			this.add(lbl);
-		this.add(field1);
+		this.add(field);
 		layout.putConstraint(SpringLayout.WEST, btnPlay, 1060, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.NORTH, btnPlay, 530, SpringLayout.NORTH, this);
         layout.putConstraint(SpringLayout.WEST, dice1, 1210, SpringLayout.WEST, this);
@@ -137,7 +145,7 @@ public class Game extends JPanel{
 	public void leaderBoard() {
 		for(int i=0;i<viewController.numberOfPlayers();i++) {
 			lblListLeaderBoard.get(i).setText(""+(i+1)+" "+viewController.getPlayerForRank(i).getName()+" "+viewController.getPlayerForRank(i).getPosition());
-			lblListLeaderBoard.get(i).setForeground(viewController.convertiColore(i));
+			lblListLeaderBoard.get(i).setForeground(viewController.colorConverter(i));
 		}
 	}
 	// Creo una finestra pop-up dove stanpo che azione fare il giocatore

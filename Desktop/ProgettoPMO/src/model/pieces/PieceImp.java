@@ -2,15 +2,15 @@ package model.pieces;
 
 
 public class PieceImp extends User implements Piece{
-	private final Colors c;
+	private final Colors color;
 	private int lastPosition;
 	private int position;
 	private int canThrow;
 	private int priority;
 	
-	public PieceImp(final String name,final Colors c,final int priority) {
+	public PieceImp(final String name,final Colors color,final int priority) {
 		super(name);
-		this.c=c;
+		this.color=color;
 		this.position=0;
 		this.lastPosition=0;
 		this.canThrow=0;
@@ -25,8 +25,8 @@ public class PieceImp extends User implements Piece{
 	public int getCanThrow() {
 		return this.canThrow;
 	}
-	public Colors getC() {
-		return c;
+	public Colors getColor() {
+		return color;
 	}
 	public int getPriority() {
 		return priority;

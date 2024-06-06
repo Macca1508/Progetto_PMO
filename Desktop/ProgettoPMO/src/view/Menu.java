@@ -13,13 +13,18 @@ public class Menu extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private JLabel lblWelcome;
+	private JButton btnGoToRegistation;
+	private JButton btnRegulation;
+	private JButton btnExit;
+	private SpringLayout layout;
 
 	public Menu(Container c,ViewController viewController) {
-		SpringLayout layout = new SpringLayout();
-		JLabel lblWelcome = new JLabel("Benvenuto al gioco dell'oca");
-		JButton btnGoToRegistation = new JButton("Registrazione utenti");
-		JButton btnRegulation = new JButton("Regolamento");
-		JButton btnExit = new JButton("Esci");
+		layout = new SpringLayout();
+		lblWelcome = new JLabel("Benvenuto al gioco dell'oca");
+		btnGoToRegistation = new JButton("Registrazione utenti");
+		btnRegulation = new JButton("Regolamento");
+		btnExit = new JButton("Esci");
 		
 		this.setBackground(Color.WHITE);
 		this.setLayout(layout);

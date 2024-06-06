@@ -42,7 +42,7 @@ public class Controller implements ViewController{
 		field.throwDices();
 	}
 
-	public void createPiece(List<String> players) {
+	public void createPieces(List<String> players) {
 		field.createPiece(players);
 	}
 	
@@ -89,7 +89,7 @@ public class Controller implements ViewController{
 	public Set<Integer> pieceInTheSlots(int position) {
 		return field.getPieces().stream()
           	   .filter(piece -> piece.getPosition()== position)
-               .map(PieceImp::getC)
+               .map(PieceImp::getColor)
                .map(color -> color.getNumber())
                .collect(Collectors.toSet());
 	}
@@ -115,13 +115,6 @@ public class Controller implements ViewController{
 	public int numberOfPlayers() {
 		return field.getPieces().size();
 	}
-	
-	public boolean isCurrentPlayer(int number) {
-		if(field.leaderBoard().get(number).equals(field.getCurrentPlayer()))
-			return true;
-		else
-			return false;
-	}
 
 	public PieceImp getPlayerForRank(int number) {
 		return field.leaderBoard().get(number);
@@ -135,16 +128,16 @@ public class Controller implements ViewController{
 		return field.getDirection();
 	}
 	
-	public Color convertiColore(int i) {
-		if(field.leaderBoard().get(i).getC().getNumber() == 0)
+	public Color colorConverter(int i) {
+		if(field.leaderBoard().get(i).getColor().getNumber() == 0)
 			return Color.ORANGE;
-		else if (field.leaderBoard().get(i).getC().getNumber() == 1)
+		else if (field.leaderBoard().get(i).getColor().getNumber() == 1)
 			return Color.BLUE;
-		else if (field.leaderBoard().get(i).getC().getNumber() == 2)
+		else if (field.leaderBoard().get(i).getColor().getNumber() == 2)
 			return Color.YELLOW;
-		else if (field.leaderBoard().get(i).getC().getNumber() == 3)
+		else if (field.leaderBoard().get(i).getColor().getNumber() == 3)
 			return Color.RED;
-		else if (field.leaderBoard().get(i).getC().getNumber() == 4)
+		else if (field.leaderBoard().get(i).getColor().getNumber() == 4)
 			return Color.GREEN;
 		else
 			return new java.awt.Color(255, 0, 255);

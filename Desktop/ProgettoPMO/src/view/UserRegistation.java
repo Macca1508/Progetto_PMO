@@ -13,17 +13,22 @@ import java.util.List;
 public class UserRegistation extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
-	List<JTextField> txtList= new ArrayList<>();
-	List<JButton> btnList= new ArrayList<>();
-	List<String> names = new ArrayList<>();
-	List<Choice> chcList = new ArrayList<>();
+	private List<JTextField> txtList= new ArrayList<>();
+	private List<JButton> btnList= new ArrayList<>();
+	private List<String> players = new ArrayList<>();
+	private List<Choice> chcList = new ArrayList<>();
+	private SpringLayout layout;
+	private JLabel lblTitle;
+	private JButton btnGoToPlay;
+	private JButton btnGoToMenu;
+	private JButton btnExit;
 
 	public UserRegistation(Container c,ViewController viewController){
-		SpringLayout layout = new SpringLayout();
-		JLabel lblTitle = new JLabel("Creazione giocatori");
-		JButton btnGoToPlay = new JButton("Inizia a giocare");
-		JButton btnGoToMenu = new JButton("Torna al Menu");
-		JButton btnEXit = new JButton("Esci");
+		layout = new SpringLayout();
+		lblTitle = new JLabel("Creazione giocatori");
+		btnGoToPlay = new JButton("Inizia a giocare");
+		btnGoToMenu = new JButton("Torna al Menu");
+		btnExit = new JButton("Esci");
 		
    	 	
 		for(int i=0;i<6;i++) {
@@ -45,7 +50,7 @@ public class UserRegistation extends JPanel{
 		
 		btnGoToPlay.setPreferredSize(new Dimension(500,120));
 		btnGoToMenu.setPreferredSize(new Dimension(500,120));
-		btnEXit.setPreferredSize(new Dimension(500,120));
+		btnExit.setPreferredSize(new Dimension(500,120));
 		txtList.forEach(txt -> txt.setPreferredSize(new Dimension(400,100)));
 		btnList.forEach(btn -> btn.setPreferredSize(new Dimension(100,100)));
 		chcList.forEach(chc -> chc.setPreferredSize(new Dimension(150,100)));
@@ -56,7 +61,7 @@ public class UserRegistation extends JPanel{
 		lblTitle.setFont(new Font("SansSerif", Font.BOLD, 45));
 		btnGoToPlay.setFont(new Font("SansSerif", Font.PLAIN, 40));
 		btnGoToMenu.setFont(new Font("SansSerif", Font.PLAIN, 40));
-		btnEXit.setFont(new Font("SansSerif", Font.PLAIN, 40));
+		btnExit.setFont(new Font("SansSerif", Font.PLAIN, 40));
         btnList.forEach(btn -> btn.setFont(new Font("SansSerif", Font.PLAIN, 40)));
         txtList.forEach(txt -> txt.setFont(new Font("SansSerif", Font.BOLD, 30)));
         chcList.forEach(chc -> chc.setFont(new Font("SansSerif", Font.BOLD, 30)));
@@ -64,8 +69,8 @@ public class UserRegistation extends JPanel{
         
         btnGoToPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(names.size()>= 2){
-					Game r = new Game(c,names,viewController);
+				if(players.size()>= 2){
+					Game r = new Game(c,players,viewController);
 					c.removeAll();
 					c.add(r);
 					c.repaint();
@@ -82,7 +87,7 @@ public class UserRegistation extends JPanel{
 				c.revalidate();
 			}
 		});
-        btnEXit.addActionListener(new ActionListener() {
+        btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
@@ -92,10 +97,10 @@ public class UserRegistation extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				final JButton jb = (JButton)e.getSource();
 				int p = btnList.indexOf(jb);
-				if((!names.contains(txtList.get(p).getText())) && (!txtList.get(p).getText().isEmpty()) && (names.stream().filter(n-> n.equals(chcList.get(p).getSelectedItem())).findAny().isEmpty()))                                               
+				if((!players.contains(txtList.get(p).getText())) && (!txtList.get(p).getText().isEmpty()) && (players.stream().filter(n-> n.equals(chcList.get(p).getSelectedItem())).findAny().isEmpty()))                                               
 				{
-					names.add(txtList.get(p).getText());
-					names.add(chcList.get(p).getSelectedItem());
+					players.add(txtList.get(p).getText());
+					players.add(chcList.get(p).getSelectedItem());
 					jb.setEnabled(false);
 					chcList.get(p).setEnabled(false);
 					txtList.get(p).setEditable(false);
@@ -107,7 +112,7 @@ public class UserRegistation extends JPanel{
 		
 		this.add(btnGoToPlay);
 		this.add(btnGoToMenu);
-		this.add(btnEXit);
+		this.add(btnExit);
 		this.add(lblTitle);
 		for(JTextField  txt:txtList)
 			this.add(txt);
@@ -122,8 +127,8 @@ public class UserRegistation extends JPanel{
         layout.putConstraint(SpringLayout.NORTH, btnGoToPlay, 200, SpringLayout.NORTH, this);
         layout.putConstraint(SpringLayout.WEST, btnGoToMenu, 1210, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.NORTH, btnGoToMenu, 360, SpringLayout.NORTH, this);
-        layout.putConstraint(SpringLayout.WEST, btnEXit, 1210, SpringLayout.WEST, this);
-        layout.putConstraint(SpringLayout.NORTH, btnEXit, 750, SpringLayout.NORTH, this);
+        layout.putConstraint(SpringLayout.WEST, btnExit, 1210, SpringLayout.WEST, this);
+        layout.putConstraint(SpringLayout.NORTH, btnExit, 750, SpringLayout.NORTH, this);
         layout.putConstraint(SpringLayout.WEST, lblTitle, 800, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.NORTH, lblTitle, 30, SpringLayout.NORTH, this);
         int agg=0;

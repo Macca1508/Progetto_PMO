@@ -15,14 +15,16 @@ public class FieldImp implements Field{
 	private DiceImp dice1,dice2;
 	private PieceImp currentPlayer;
 	private int diceTot;
-	private boolean direction= true;
+	private boolean direction;
 	private static FieldImp fieldImp;
 	
 	private FieldImp() {
-		createActionSlotList();
+		
 		createActionSlot();
+		createSlot();
 		this.dice1 = DiceImp.createDice();
 		this.dice2 = DiceImp.createDice();
+		this.direction = true;
 	}
 	
 	public static FieldImp createField() {
@@ -120,7 +122,7 @@ public class FieldImp implements Field{
 		}
 	}
 	// Instanza tutte le caselle azione  
-	private void createActionSlotList(){
+	private void createActionSlot(){
 		this.actionSlots.add(new RerollActionSlot(5));
 		this.actionSlots.add(new RerollActionSlot(41));
 		this.actionSlots.add(new RerollActionSlot(50));
@@ -143,7 +145,7 @@ public class FieldImp implements Field{
 		this.actionSlots.add(new DoubleResultActionSlot(32));
 	}
 	// Instanza tutte le caselle normali 
-	private void createActionSlot(){
+	private void createSlot(){
 		for(int i=0;i<FieldImp.nSlot;i++) {
 			if(this.actionSlotPresent(i+1))
 				this.slots.add(new SlotImp(i+1));
