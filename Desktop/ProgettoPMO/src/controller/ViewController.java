@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.List;
 import java.util.Set;
 
-import model.pieces.PieceImp;
+import model.piece.PieceImp;
 
 public interface ViewController {
 	void startTurn();

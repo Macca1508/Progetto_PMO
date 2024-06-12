@@ -2,7 +2,7 @@ package model;
 
 import java.util.List;
 
-import model.pieces.PieceImp;
+import model.piece.PieceImp;
 
 public interface Field {
 	void setCurrentPlayer();

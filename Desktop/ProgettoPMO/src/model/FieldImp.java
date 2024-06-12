@@ -4,8 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import model.pieces.*;
-import model.slots.*;
+import model.dice.DiceImp;
+import model.piece.*;
+import model.slot.*;
 
 public class FieldImp implements Field{
 	private final static int nSlot = 63;
@@ -56,7 +57,8 @@ public class FieldImp implements Field{
 	public boolean getDirection() {
 		return this.direction;
 	}
-	private void setDiceTot(int currentValue1, int currentValue2) {
+	// il metodo è publicco solo per i test senno andrebbe messo privato 
+	public void setDiceTot(int currentValue1, int currentValue2) {
 		this.diceTot= currentValue1+currentValue2;
 	}
 	// Imposta il giocatore che deve fare il turno
@@ -106,20 +108,29 @@ public class FieldImp implements Field{
 	}
 	// Controlla se la casella in cui il giocatore è arrivato sia una casella azione
 	public boolean ifIsAction() {
-		return this.actionSlots.stream()
+			if(this.actionSlots.stream()
 				               .filter(actionSlot-> actionSlot.getSlotName()== this.currentPlayer.getPosition())
 				               .findFirst()
-				               .isPresent();
+				               .isPresent()) {
+				if(this.getActionSlot() instanceof SwichActionSlot) {
+					SwichActionSlot tmp = (SwichActionSlot) this.getActionSlot();
+					tmp.set(this.getPieces().stream().findAny().get());
+				}
+				return true;
+			}else 
+				return false;
 	}
 	// Esegue l'azione sul giocatore se si è possizionato su una casella azione
 	public void doActions() {
 		if(ifIsAction()) {
-			this.actionSlots.stream()
-			   .filter(actionSlot-> actionSlot.getSlotName()== this.currentPlayer.getPosition())
-			   .findFirst()
-			   .get()
-			   .action(currentPlayer);
+			this.getActionSlot().action(currentPlayer);
 		}
+	}
+	private ActionSlot getActionSlot() {
+		return this.actionSlots.stream()
+				   .filter(actionSlot-> actionSlot.getSlotName()== this.currentPlayer.getPosition())
+				   .findFirst()
+				   .get();
 	}
 	// Instanza tutte le caselle azione  
 	private void createActionSlot(){
@@ -143,12 +154,15 @@ public class FieldImp implements Field{
 		this.actionSlots.add(new StopActionSlot(52,2));
 		this.actionSlots.add(new DoubleResultActionSlot(14));
 		this.actionSlots.add(new DoubleResultActionSlot(32));
+		this.actionSlots.add(new SwichActionSlot(25));
+		this.actionSlots.add(new SwichActionSlot(22));
+		this.actionSlots.add(new SwichActionSlot(51));
 	}
 	// Instanza tutte le caselle normali 
 	private void createSlot(){
-		for(int i=0;i<FieldImp.nSlot;i++) {
-			if(this.actionSlotPresent(i+1))
-				this.slots.add(new SlotImp(i+1));
+		for(int i=1;i<=FieldImp.nSlot;i++) {
+			if(this.actionSlotPresent(i))
+				this.slots.add(new SlotImp(i));
 		}
 	}
 	// Controlla se la casella con un determinato nome esiste già 
