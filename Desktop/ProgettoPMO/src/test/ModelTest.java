@@ -5,11 +5,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
+import org.junit.Before;
+
 import model.FieldImp;
 
 public class ModelTest {
 		
 	ArrayList<String> piece = new ArrayList<>();
+	FieldImp field;
 	
 	private void pieces(){
 		piece.add("Tommaso");
@@ -17,66 +20,110 @@ public class ModelTest {
 		piece.add("Angelo");
 		piece.add("BLUE");
 	}
-
-	@org.junit.Test
-    public void testPiecesMove() {
-		// Creazione campo da gioco
-		FieldImp field = FieldImp.createField();
+	@Before
+	public void createData() {
+		field = FieldImp.createField();
 		field.reset();
 		pieces();
 		field.createPiece(piece);
-		field.goToPlay();
-		assertEquals(2,field.countPeoplePlayTurn());
-		// Designazione del primo giocatore giocatore
-		field.setCurrentPlayer();
-		assertEquals("Tommaso",field.getCurrentPlayer().getName());
-		assertEquals(0,field.getCurrentPlayer().getPriority());
-		// Primo turno
-		field.throwDices();
-		field.play();
-		assertEquals(field.getDiceTot(),field.getCurrentPlayer().getPosition());
-		assertEquals(0,field.getCurrentPlayer().getCanThrow());
-		// Designazione del secondo giocatore giocatore
-		field.setCurrentPlayer();
-		assertEquals("Angelo",field.getCurrentPlayer().getName());
-		assertEquals(2,field.getCurrentPlayer().getPriority());
-		// Primo turno
-		field.throwDices();
-		field.play();
-		assertEquals(field.getDiceTot(),field.getCurrentPlayer().getPosition());
-		assertEquals(0,field.getCurrentPlayer().getCanThrow());
-		// Conclusione del turno
-		assertEquals(0,field.countPeoplePlayTurn());
-    }
+	}
 	
 	@org.junit.Test
-	public void testPiecesActionSLot(){
-		FieldImp field = FieldImp.createField();
-		field.reset();
-		pieces();
-		field.createPiece(piece);
+    public void testGoToPlay() {
+		field.goToPlay();
+		assertEquals(2,field.countPeoplePlayTurn());
+	}
+	@org.junit.Test
+	public void testSetCurrentPlayer() {
 		field.goToPlay();
 		field.setCurrentPlayer();
 		assertEquals("Tommaso",field.getCurrentPlayer().getName());
 		assertEquals(0,field.getCurrentPlayer().getPriority());
-		// Primo turno
-		field.setDiceTot(4, 5);
+	}
+	@org.junit.Test // Flaky test
+	public void testThrowDices() {
+		field.throwDices();
+		assertEquals(2,field.getDiceTot());
+	}
+
+	@org.junit.Test
+    public void testPlay() {
+		field.goToPlay();
+		field.setCurrentPlayer();
+		field.setDiceTot(5, 6);
+		field.play();
+		assertEquals(11,field.getCurrentPlayer().getPosition());
+		assertEquals(0,field.getCurrentPlayer().getCanThrow());
+    }
+	@org.junit.Test
+	public void testIfIsAction() {
+		field.goToPlay();
+		field.setCurrentPlayer();
+		field.setDiceTot(6, 3);
 		field.play();
 		assertTrue(field.ifIsAction());
+	}
+	
+	@org.junit.Test
+	public void doActionsStop(){
+		field.goToPlay();
+		field.setCurrentPlayer();
+		field.setDiceTot(6, 3);
+		field.play();
 		field.doActions();
 		assertEquals(1,field.getCurrentPlayer().getPosition());
+	}
+	@org.junit.Test
+	public void doActionsReroll(){
+		field.goToPlay();
+		field.setCurrentPlayer();
+		field.setDiceTot(4, 1);
+		field.play();
+		field.doActions();
+		assertEquals("Tommaso",field.getCurrentPlayer().getName());
+	}
+	@org.junit.Test
+	public void doActionsGoTo(){
+		field.goToPlay();
+		field.setCurrentPlayer();
+		field.setDiceTot(3, 3);
+		field.play();
+		field.doActions();
+		field.setCurrentPlayer();
+		field.setDiceTot(2, 1);
+		field.play();
+		field.goToPlay();
+		field.setCurrentPlayer();
+		assertEquals(12,field.getCurrentPlayer().getPosition());
+	}
+	@org.junit.Test
+	public void doActionsDoubleResault(){
+		field.goToPlay();
+		field.setCurrentPlayer();
+		field.setDiceTot(7, 7);
+		field.play();
+		field.doActions();
+		field.setCurrentPlayer();
+		field.setDiceTot(2, 1);
+		field.play();
+		field.goToPlay();
+		field.setCurrentPlayer();
+		assertEquals(28,field.getCurrentPlayer().getPosition());
+	}
+	@org.junit.Test
+	public void doActionsSwap(){
+		field.goToPlay();
+		field.setCurrentPlayer();
+		field.setDiceTot(14, 14);
+		field.play();
+		field.ifIsAction();
+		field.doActions();
+		assertEquals(0,field.getCurrentPlayer().getPosition());
 	}
 	
 	@org.junit.Test
 	public void testPiecesLiderBoard(){
-		// Creazione campo da gioco
-		FieldImp field = FieldImp.createField();
-		field.reset();
-		pieces();
-		field.createPiece(piece);
 		field.goToPlay();
-		assertEquals(2,field.countPeoplePlayTurn());
-		// Designazione del primo giocatore giocatore
 		field.setCurrentPlayer();
 		field.throwDices();
 		field.play();
@@ -85,11 +132,6 @@ public class ModelTest {
 	
 	@org.junit.Test
 	public void testWin(){
-		// Creazione campo da gioco
-		FieldImp field = FieldImp.createField();
-		field.reset();
-		pieces();
-		field.createPiece(piece);
 		field.goToPlay();
 		field.setCurrentPlayer();
 		field.setDiceTot(32, 31);
@@ -101,6 +143,12 @@ public class ModelTest {
 		field.setCurrentPlayer();
 		assertEquals(63,field.getCurrentPlayer().getPosition());
 		assertTrue(field.isWin());
+	}
+	
+	@org.junit.Test
+	public void testReset(){
+		field.reset();
+		assertTrue(field.getPieces().isEmpty());
 	}
 	
 }
