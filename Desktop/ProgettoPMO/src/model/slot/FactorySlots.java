@@ -10,6 +10,7 @@ public class FactorySlots {
 			case SWAP:
 				return new SwapActionSlot(slotNumber);
 			default:
+				System.out.println("errore 1");
 				break;
 		}
 		return null;
@@ -22,6 +23,7 @@ public class FactorySlots {
 			case STOP:
 				return new StopActionSlot(slotNumber,extra);
 			default:
+				System.out.println("errore 2");
 				break;
 		}
 		return null;

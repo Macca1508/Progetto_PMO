@@ -1,6 +1,5 @@
 package model.piece;
 
-
 public class PieceImp extends User implements Piece{
 	private final Colors color;
 	private int lastPosition;

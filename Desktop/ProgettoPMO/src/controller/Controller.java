@@ -128,6 +128,9 @@ public class Controller implements ViewController{
 	public PieceImp getPlayerForRank(int number) {
 		return this.getField().leaderBoard().get(number);
 	}
+	public PieceImp getPlayer(int number) {
+		return this.getField().getPieces().stream().collect(Collectors.toList()).get(number);
+	}
 	// Restituisce la somma dei dadi lanciati
 	public int valueDiceTot() {
 		return this.getField().getDiceTot();
@@ -150,5 +153,8 @@ public class Controller implements ViewController{
 			return Color.GREEN;
 		else
 			return new java.awt.Color(255, 0, 255);
+	}
+	public void createThebigDuck() {
+		this.getField().createTheBigDuck();
 	}
 } 

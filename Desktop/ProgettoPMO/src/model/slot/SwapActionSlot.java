@@ -10,8 +10,10 @@ public class SwapActionSlot extends SlotImp implements ActionSlot{
 	}
 	public void action(PieceImp p) {
 		int a,b;
+		System.out.println(p.getPosition());
 		a = p.getPosition();
 		p.setPosition(target.getPosition());
+		System.out.println(p.getPosition());
 		target.setPosition(a);
 		b = p.getLastPosition();
 		p.setLastPosition(a);

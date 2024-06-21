@@ -114,9 +114,10 @@ public class ModelTest {
 	public void doActionsSwap(){
 		field.goToPlay();
 		field.setCurrentPlayer();
-		field.setDiceTot(14, 14);
+		field.setDiceTot(14, 15);
 		field.play();
 		field.ifIsAction();
+		assertTrue(field.ifIsAction());
 		field.doActions();
 		assertEquals(0,field.getCurrentPlayer().getPosition());
 	}
@@ -134,14 +135,14 @@ public class ModelTest {
 	public void testWin(){
 		field.goToPlay();
 		field.setCurrentPlayer();
-		field.setDiceTot(32, 31);
+		field.setDiceTot(54, 45);
 		field.play();
 		field.setCurrentPlayer();
 		field.setDiceTot(2, 1);
 		field.play();
 		field.goToPlay();
 		field.setCurrentPlayer();
-		assertEquals(63,field.getCurrentPlayer().getPosition());
+		assertEquals(99,field.getCurrentPlayer().getPosition());
 		assertTrue(field.isWin());
 	}
 	

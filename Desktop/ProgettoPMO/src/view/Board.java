@@ -20,18 +20,22 @@ public class Board extends JPanel{
 	public static final int delay = 600;
 	private List<JLabel> lblListField = new ArrayList<>();
 	private ViewController viewController;
+	private List<Integer> posizioni; 
 	
 	public Board(ViewController viewController) {
 		this.viewController = viewController;
-		this.setLayout(new GridLayout(8,8));
-		for(int i=0;i<64;i++)
+		this.setLayout(new GridLayout(10,10));
+		for(int i=0;i<100;i++)
 			lblListField.add(new JLabel());
-		for(int i=0;i<64;i++)
+		for(int i=0;i<100;i++)
 			lblListField.get(i).setIcon(new ImageIcon("immagini/"+convertion1(i)+".png"));
-		lblListField.forEach(txt -> txt.setPreferredSize(new Dimension(126,126)));
+		lblListField.forEach(txt -> txt.setPreferredSize(new Dimension(100,100)));
 		lblListField.forEach(txt -> txt.setBorder(BorderFactory.createLineBorder(Color.BLACK,2)));
 		for(JLabel  lbl:lblListField)
 			this.add(lbl);
+		this.posizioni= new ArrayList<Integer>();
+		for(int i=0;i<viewController.numberOfPlayers();i++)
+			this.posizioni.add(0);
 	}
 	
 	public List<JLabel> getLblField() {
@@ -40,9 +44,9 @@ public class Board extends JPanel{
 	
 	// crea una il riferimneto per muoversi a spirale
 	private int[][] spiralReferenceMove() {
-		int [][] result = new int [8][8];	
+		int [][] result = new int [10][10];	
 		int i=0;
-		int lMax=7;
+		int lMax=9;
 		int lMin=0;
 		int row=0;
 		int col=0;
@@ -59,14 +63,14 @@ public class Board extends JPanel{
 			col++;
 			row++;
 			lMax--;
-		}while(i<=63);
+		}while(i<=99);
 		return result;
 	}
 	// dato un numero restituisce il numero effettivo della casella  Es. 63 == 14
 	private int convertion1(int val) {
 		int b[][] = spiralReferenceMove();
-		int a= val/8; 
-		int c= val%8;
+		int a= val/10; 
+		int c= val%10;
 		return b[a][c];
 	}
 	// dato un numero restituisce il numero della casella corrispondete  Es. 14 == 63
@@ -75,11 +79,11 @@ public class Board extends JPanel{
 		for (int h = 0; h < b.length; h++) 
             for (int j = 0; j < b[h].length; j++) 
                 if(b[h][j]==val)
-                	return 8*h+j;
+                	return 10*h+j;
 		return 0;
 	}
 	// Imposta le immagini nelle varie caselle
-	public void imagesManagement(int currentPosition,int lastPosition) {
+	public void imagesManagement(int currentPosition,int lastPosition) {	
 		lblListField.get(convertion2(currentPosition)).setIcon(new ImageIcon("immagini/personaggi/"+controlSlot(currentPosition,1)+".png"));
 		if(viewController.getPositionByCurrentPlayer() == lastPosition && !viewController.getDirection())
 			lblListField.get(convertion2(lastPosition)).setIcon(new ImageIcon("immagini/"+lastPosition+".png"));
@@ -87,12 +91,24 @@ public class Board extends JPanel{
 			lblListField.get(convertion2(lastPosition)).setIcon(new ImageIcon("immagini/personaggi/"+controlSlot(lastPosition,0)+".png"));
 		else
 			lblListField.get(convertion2(lastPosition)).setIcon(new ImageIcon("immagini/"+lastPosition+".png"));
-		
+	}
+	public void imagesManagementTot() {
+		for(int i=0;i<viewController.numberOfPlayers();i++) {
+			if(viewController.getPlayer(i).getPosition()!=this.posizioni.get(i)) {
+				lblListField.get(convertion2(viewController.getPlayer(i).getPosition())).setIcon(new ImageIcon("immagini/personaggi/"+controlSlot(viewController.getPlayer(i).getPosition(),1)+".png"));
+				if(viewController.getPositionByCurrentPlayer() == viewController.getPlayer(i).getLastPosition() && !viewController.getDirection())
+					lblListField.get(convertion2(viewController.getPlayer(i).getLastPosition())).setIcon(new ImageIcon("immagini/"+viewController.getPlayer(i).getLastPosition()+".png"));
+				else if(viewController.thereArePlayer(viewController.getPlayer(i).getLastPosition())) 
+					lblListField.get(convertion2(viewController.getPlayer(i).getLastPosition())).setIcon(new ImageIcon("immagini/personaggi/"+controlSlot(viewController.getPlayer(i).getLastPosition(),0)+".png"));
+				else
+					lblListField.get(convertion2(viewController.getPlayer(i).getLastPosition())).setIcon(new ImageIcon("immagini/"+viewController.getPlayer(i).getLastPosition()+".png"));
+			}
+		}
 	}
 	// Getsisce le immagini nel intero movimento di una pedina 
 	public void updateImages(Container c) {
 		for(int i=1,h=0;i<=viewController.valueDiceTot();i++) {
-			if(viewController.getLastPositionByCurrentPlayer()+i-1<63) {
+			if(viewController.getLastPositionByCurrentPlayer()+i-1<99) {
 				imagesManagement(viewController.getLastPositionByCurrentPlayer()+i,viewController.getLastPositionByCurrentPlayer()+i-1);
 				this.animation(viewController.getLastPositionByCurrentPlayer()+i,viewController.getLastPositionByCurrentPlayer()+i-1);
 			}else {

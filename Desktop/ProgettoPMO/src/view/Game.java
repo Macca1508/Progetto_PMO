@@ -28,6 +28,7 @@ public class Game extends JPanel{
 	public Game(Container c,List<String> players,ViewController viewController){
 		this.viewController = viewController;
 		viewController.createPieces(players);
+		viewController.createThebigDuck();
 		field = new Board(viewController);
 		layout = new SpringLayout();
 		for(int i=0,j=1;i<players.size();i+=2,j++)
@@ -42,7 +43,6 @@ public class Game extends JPanel{
 		btnExit = new JButton("Esci");
 		
 		this.setBackground(Color.WHITE);
-		this.setPreferredSize(new Dimension(800,950));
 		this.setLayout(layout);
 		
 		dice1.setPreferredSize(new Dimension(150,150));
@@ -82,6 +82,7 @@ public class Game extends JPanel{
 			public void actionPerformed(ActionEvent e)  {
 				final JButton jb = (JButton)e.getSource();
 				viewController.startTurn();
+				field.imagesManagementTot();
 				pic().setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0,Color.BLACK));
 				viewController.play();
 				dice1.setIcon(new ImageIcon("immagini/facceDadi/"+viewController.valueDice1()+".png"));

@@ -1,15 +1,21 @@
 package model;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import model.dice.DiceImp;
 import model.piece.*;
 import model.slot.*;
 
 public class FieldImp implements Field{
-	private final static int nSlot = 63;
+	private final static int nSlot = 99;
 	private Set<PieceImp> pieces = new HashSet<>();
 	private Set<ActionSlot> actionSlots = new HashSet<>();
 	private Set<Slot> slots = new HashSet<>();
@@ -18,6 +24,8 @@ public class FieldImp implements Field{
 	private int diceTot;
 	private boolean direction;
 	private static FieldImp fieldImp;
+	private String nomefile="ActionSlots.txt";
+	private TheBigDuck bigDuck;
 	
 	private FieldImp() {
 		createActionSlot();
@@ -56,6 +64,11 @@ public class FieldImp implements Field{
 	public boolean getDirection() {
 		return this.direction;
 	}
+	public void createTheBigDuck() {
+		this.bigDuck = new TheBigDuck();
+		this.bigDuck.setPlayer(this.pieces);
+		
+	}
 	// il metodo è publicco solo per i test senno andrebbe messo privato 
 	public void setDiceTot(int currentValue1, int currentValue2) {
 		this.diceTot= currentValue1+currentValue2;
@@ -72,6 +85,9 @@ public class FieldImp implements Field{
 	// Aggiunge un permesso di gioco ad ogni giocatore
 	public void goToPlay() {
 		if(this.countPeoplePlayTurn() <= 0)
+			this.bigDuck.increseTurn();
+			this.bigDuck.start();
+			this.bigDuck.doTheMagic(1);
 			while(this.getPieces().stream().filter(piece -> piece.getCanThrow()>0).count()< 1) {
 				this.pieces.forEach(piece -> piece.canThrowInc());		
 		}	
@@ -115,7 +131,10 @@ public class FieldImp implements Field{
 					SwapActionSlot tmp = (SwapActionSlot) this.getActionSlot();
 					PieceImp p = null;
 					do {
-						p = this.getPieces().stream().findAny().get();
+						System.out.println(this.getPieces().size());
+						Random r = new Random();
+						p = this.getPieces().stream().collect(Collectors.toList()).get(r.nextInt(2));
+						System.out.println(p.getName());
 					}while(this.getCurrentPlayer().equals(p));
 					tmp.setTarget(p);
 				}
@@ -134,32 +153,39 @@ public class FieldImp implements Field{
 				   .filter(actionSlot-> actionSlot.getSlotName()== this.currentPlayer.getPosition())
 				   .findFirst()
 				   .get();
-	}
+	} 
 	// Instanza tutte le caselle azione  
 	private void createActionSlot(){
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.REROLL,5));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.REROLL,41));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.REROLL,50));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.REROLL,53));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.REROLL,59));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.GO_TO,6,12));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.GO_TO,9,1));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.GO_TO,23,28));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.GO_TO,42,35));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.GO_TO,45,40));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.GO_TO,54,57));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.GO_TO,58,1));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.STOP,18,1));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.STOP,19,1));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.STOP,26,1));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.STOP,32,2));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.STOP,36,1));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.STOP,52,2));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.DOUBLE_RESULT,14));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.DOUBLE_RESULT,32));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.SWAP,28));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.SWAP,39));
-		this.actionSlots.add(FactorySlots.createActionSlots(ActionSlotsType.SWAP,61));
+		try {
+			BufferedReader leggi = new BufferedReader(new FileReader(nomefile));
+			String sTmp[];
+			boolean stato= true;
+			String tmp;
+			while(stato)
+			{
+				tmp = leggi.readLine();
+				if(tmp==null)
+					stato=false;   
+				else
+				{
+					sTmp = tmp.split(";");
+					ActionSlotsType c = ActionSlotsType.parseToActionSlotType(sTmp[0]);
+					int d = Integer.parseInt(sTmp[1]);
+					if(sTmp.length == 2) 
+						this.actionSlots.add(FactorySlots.createActionSlots(c,d));
+					else {
+						int e = Integer.parseInt(sTmp[2]);
+						this.actionSlots.add(FactorySlots.createActionSlots(c,d,e));
+					}
+					sTmp = null;
+				}
+			}
+			leggi.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	// Instanza tutte le caselle normali 
 	private void createSlot(){
