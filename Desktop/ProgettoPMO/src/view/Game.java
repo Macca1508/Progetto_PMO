@@ -28,7 +28,7 @@ public class Game extends JPanel{
 	public Game(Container c,List<String> players,ViewController viewController){
 		this.viewController = viewController;
 		viewController.createPieces(players);
-		viewController.createThebigDuck();
+		viewController.setPlayerForBigDuck();
 		field = new Board(viewController);
 		layout = new SpringLayout();
 		for(int i=0,j=1;i<players.size();i+=2,j++)
@@ -50,7 +50,7 @@ public class Game extends JPanel{
 		dice2.setPreferredSize(new Dimension(150,150));
 		dice2.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
 		equals.setPreferredSize(new Dimension(120,120));
-		result.setPreferredSize(new Dimension(150,150));
+		result.setPreferredSize(new Dimension(200,150));
 		btnPlay.setPreferredSize(new Dimension(400,100));
 		btnBackToMenu.setPreferredSize(new Dimension(300,80));
 		btnExit.setPreferredSize(new Dimension(300,80));
@@ -81,16 +81,24 @@ public class Game extends JPanel{
 		btnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)  {
 				final JButton jb = (JButton)e.getSource();
+				String m;
 				viewController.startTurn();
+				m = viewController.getMessages();
+				if(m != "")
+					printAll(c,m);
 				field.imagesManagementTot();
+				leaderBoard();
 				pic().setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0,Color.BLACK));
 				viewController.play();
 				dice1.setIcon(new ImageIcon("immagini/facceDadi/"+viewController.valueDice1()+".png"));
 				dice2.setIcon(new ImageIcon("immagini/facceDadi/"+viewController.valueDice2()+".png"));
-				result.setText("" +(viewController.valueDice1()+viewController.valueDice2()));
+				if(viewController.getCurrentPlayer().getBoostThrow() > 0)
+					result.setText("" +(viewController.valueDice1()+viewController.valueDice2()+"+"+viewController.getCurrentPlayer().getBoostThrow()));
+				else
+					result.setText("" +(viewController.valueDice1()+viewController.valueDice2()));
 				field.updateImages(c);
 				if(viewController.ifIsAction()) {
-					printActions(c);
+					printAll(c,viewController.getMessages(viewController.getCurrentPlayer()));
 					viewController.doActions();
 					field.imagesManagement(viewController.getPositionByCurrentPlayer(),viewController.getLastPositionByCurrentPlayer());
 				}
@@ -100,7 +108,6 @@ public class Game extends JPanel{
 					JOptionPane.showMessageDialog(c,"<html><h1>"+viewController.getCurrentPlayer().getName()+" ha vinto !!</h1></html>");
 				}
 				lblListLeaderBoard.forEach(lbl -> lbl.setBorder(BorderFactory.createLineBorder(Color.WHITE,2)));
-				
 			}
 		});
 		
@@ -140,7 +147,6 @@ public class Game extends JPanel{
         	}
         	else	
         		y+=150;
-        	
         }
 	}
 	
@@ -152,11 +158,10 @@ public class Game extends JPanel{
 		}
 	}
 	// Creo una finestra pop-up dove stanpo che azione fare il giocatore
-	public void printActions(Container c) {
-		String message = viewController.setMessages();
-		JOptionPane.showMessageDialog(c,"<html><h1>"+viewController.getCurrentPlayer().getName()+" "+message+"</h1></html>");
+	public void printAll(Container c, String message) {
+		JOptionPane.showMessageDialog(c,"<html><h1>"+message+"</h1></html>");
 	}
-	
+	// restituisce la tabella del player che gioca
 	public JLabel pic() {
 		JLabel tmp= null;
 		for(int i=0;i<viewController.numberOfPlayers();i++)

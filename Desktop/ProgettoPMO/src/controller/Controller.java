@@ -9,6 +9,9 @@ import java.util.stream.Collectors;
 
 import model.FieldImp;
 import model.piece.PieceImp;
+import model.slot.ActionSlot;
+import model.slot.RerollActionSlot;
+import model.slot.StopActionSlot;
 import view.Menu;
 import view.MyFrame;
 
@@ -59,13 +62,17 @@ public class Controller implements ViewController{
 		this.getField().reset();
 	}
 	// Restituisce il messagio in base alla casella azione in si è fermata la pedina 
-	public String setMessages() {
+	public String getMessages(PieceImp piece) {
 		return this.getField().getActionSlots().stream()
 				    .filter(actionSlot-> actionSlot.getSlotName()== this.getPositionByCurrentPlayer())
 				    .findFirst()
 				    .get()
-				    .message();
+				    .message(piece);
 	}
+	public String getMessages() {
+		return this.getField().getBigDuck().getMessage();
+	}
+	
 	// Restituisce il giocatore che sta facendo il turno
 	public PieceImp getCurrentPlayer() {
 		return this.getField().getCurrentPlayer();
@@ -154,7 +161,18 @@ public class Controller implements ViewController{
 		else
 			return new java.awt.Color(255, 0, 255);
 	}
-	public void createThebigDuck() {
-		this.getField().createTheBigDuck();
+	public void setPlayerForBigDuck() {
+		this.getField().setPlayerForBigDuck();
+	}
+	public boolean isStopOrReroll() {
+		if(this.getField().getActionSlots().stream().filter(action ->  action.getSlotName() == this.getPositionByCurrentPlayer()).findFirst().isPresent()) {
+			ActionSlot slot = this.getField().getActionSlots().stream().filter(action ->  action.getSlotName() == this.getPositionByCurrentPlayer()).findFirst().get();
+			if( slot instanceof StopActionSlot || slot instanceof RerollActionSlot)
+				return true;
+			else
+				return false;
+		}
+		else
+			return false;
 	}
 } 

@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import model.dice.DiceImp;
 import model.piece.*;
 import model.slot.*;
+import model.theBigDuck.TheBigDuckImp;
 
 public class FieldImp implements Field{
 	private final static int nSlot = 99;
@@ -25,13 +26,14 @@ public class FieldImp implements Field{
 	private boolean direction;
 	private static FieldImp fieldImp;
 	private String nomefile="ActionSlots.txt";
-	private TheBigDuck bigDuck;
+	private TheBigDuckImp bigDuck;
 	
 	private FieldImp() {
 		createActionSlot();
 		createSlot();
 		this.dice1 = DiceImp.createDice();
 		this.dice2 = DiceImp.createDice();
+		this.bigDuck = TheBigDuckImp.createTheBigDuck();
 		this.direction = true;
 	}
 	
@@ -64,14 +66,19 @@ public class FieldImp implements Field{
 	public boolean getDirection() {
 		return this.direction;
 	}
-	public void createTheBigDuck() {
-		this.bigDuck = new TheBigDuck();
+	public TheBigDuckImp getBigDuck() {
+		return bigDuck;
+	}
+	public void setPlayerForBigDuck() {
 		this.bigDuck.setPlayer(this.pieces);
-		
 	}
 	// il metodo è publicco solo per i test senno andrebbe messo privato 
 	public void setDiceTot(int currentValue1, int currentValue2) {
-		this.diceTot= currentValue1+currentValue2;
+		if(this.getCurrentPlayer().getBoostThrow()>0) {
+			this.diceTot= currentValue1+currentValue2+this.getCurrentPlayer().getPlusThrow();
+			this.currentPlayer.boostThrowDec();
+		}else
+			this.diceTot= currentValue1+currentValue2;
 	}
 	// Imposta il giocatore che deve fare il turno
 	public void setCurrentPlayer() {
@@ -84,20 +91,21 @@ public class FieldImp implements Field{
 	}
 	// Aggiunge un permesso di gioco ad ogni giocatore
 	public void goToPlay() {
-		if(this.countPeoplePlayTurn() <= 0)
-			this.bigDuck.increseTurn();
+		if(this.countPeoplePlayTurn() <= 0) {
 			this.bigDuck.start();
-			this.bigDuck.doTheMagic(1);
+			this.bigDuck.increseTurn();
+			this.bigDuck.doTheMagic();
 			while(this.getPieces().stream().filter(piece -> piece.getCanThrow()>0).count()< 1) {
 				this.pieces.forEach(piece -> piece.canThrowInc());		
-		}	
+			}	
+		}
 	}
 	// Restituisce il totale dei permessi dei giocatori
 	public int countPeoplePlayTurn() {
 		return  this.pieces.stream()
 						   .filter(piece-> piece.getCanThrow()>0)
 						   .map(PieceImp::getCanThrow)
-						   .reduce(0,Integer::sum);
+						   .reduce(0, Integer::sum);
 	}
 	// Simula il lancio dei dadi
 	public void throwDices() {
@@ -131,10 +139,8 @@ public class FieldImp implements Field{
 					SwapActionSlot tmp = (SwapActionSlot) this.getActionSlot();
 					PieceImp p = null;
 					do {
-						System.out.println(this.getPieces().size());
 						Random r = new Random();
 						p = this.getPieces().stream().collect(Collectors.toList()).get(r.nextInt(2));
-						System.out.println(p.getName());
 					}while(this.getCurrentPlayer().equals(p));
 					tmp.setTarget(p);
 				}
@@ -148,6 +154,7 @@ public class FieldImp implements Field{
 			this.getActionSlot().action(currentPlayer);
 		}
 	}
+	// Restituisce la casella azione su cui è il player che sta giocando
 	private ActionSlot getActionSlot() {
 		return this.actionSlots.stream()
 				   .filter(actionSlot-> actionSlot.getSlotName()== this.currentPlayer.getPosition())
@@ -212,6 +219,7 @@ public class FieldImp implements Field{
 	// Cancella HashSet dei giocatori cosi da poter fare un altra partita con dei nuovi giocatori
 	public void reset() {
 		this.pieces = new HashSet<PieceImp>();
+		this.bigDuck.reset();
 	}
 	// Restituisce una classifica momentanea
 	public List<PieceImp> leaderBoard(){

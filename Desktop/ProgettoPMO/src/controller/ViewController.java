@@ -12,7 +12,7 @@ public interface ViewController {
 	void reset();
 	void play();
 	void doActions();
-	void createThebigDuck();
+	void setPlayerForBigDuck();
 	int valueDice1();
 	int valueDice2();
 	int valueDiceTot();
@@ -23,11 +23,12 @@ public interface ViewController {
 	boolean isWin();
 	boolean thereArePlayer(int position);	
 	boolean getDirection();
+	boolean isStopOrReroll();
 	Set<Integer> pieceInTheSlots(int position);
 	PieceImp getCurrentPlayer();
 	PieceImp getPlayerForRank(int number);
 	PieceImp getPlayer(int number);
-	String setMessages();
+	String getMessages(PieceImp piece);
+	String getMessages();
 	Color colorConverter(int i);
-	
 }

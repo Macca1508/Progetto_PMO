@@ -7,11 +7,12 @@ public class RerollActionSlot extends SlotImp implements ActionSlot {
 		super(slotName);
 	}
 	// Aumenta i permessi della pedina cosi ritirerà
-	public void action(PieceImp p) {
-		p.canThrowInc();
+	public void action(PieceImp piece) {
+		piece.canThrowInc();
+		
 	}
 	// Genera la stringa del pop-up
-	public String message() {
-		return "ritirerà";
+	public String message(PieceImp piece) {
+		return piece.getName()+" ritirerà";
 	}
 }

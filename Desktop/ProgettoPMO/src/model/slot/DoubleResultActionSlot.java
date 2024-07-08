@@ -13,8 +13,8 @@ public class DoubleResultActionSlot extends SlotImp implements ActionSlot{
 		piece.setPosition(piece.getPosition()+valueOfThrow);
 	}
 	// Genera la stringa del pop-up
-	public String message() {
-		return " si muoverà di quanto ha fatto prima";
+	public String message(PieceImp piece) {
+		return piece.getName()+ " si muoverà di quanto ha fatto prima";
 	}
 	
 }

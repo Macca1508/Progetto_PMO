@@ -17,7 +17,7 @@ public class Board extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static final int delay = 600;
+	public static final int delay = 450;
 	private List<JLabel> lblListField = new ArrayList<>();
 	private ViewController viewController;
 	private List<Integer> posizioni; 
@@ -66,14 +66,14 @@ public class Board extends JPanel{
 		}while(i<=99);
 		return result;
 	}
-	// dato un numero restituisce il numero effettivo della casella  Es. 63 == 14
+	// dato un numero restituisce il numero effettivo della casella  Es. 99 == 18
 	private int convertion1(int val) {
 		int b[][] = spiralReferenceMove();
 		int a= val/10; 
 		int c= val%10;
 		return b[a][c];
 	}
-	// dato un numero restituisce il numero della casella corrispondete  Es. 14 == 63
+	// dato un numero restituisce il numero della casella corrispondete  Es. 18 == 99
 	private int convertion2(int val) {
 		int b[][] = spiralReferenceMove();
 		for (int h = 0; h < b.length; h++) 
@@ -92,17 +92,14 @@ public class Board extends JPanel{
 		else
 			lblListField.get(convertion2(lastPosition)).setIcon(new ImageIcon("immagini/"+lastPosition+".png"));
 	}
+	// Imposta le immagini nelle varie caselle di tutte le pedine 
 	public void imagesManagementTot() {
 		for(int i=0;i<viewController.numberOfPlayers();i++) {
-			if(viewController.getPlayer(i).getPosition()!=this.posizioni.get(i)) {
-				lblListField.get(convertion2(viewController.getPlayer(i).getPosition())).setIcon(new ImageIcon("immagini/personaggi/"+controlSlot(viewController.getPlayer(i).getPosition(),1)+".png"));
-				if(viewController.getPositionByCurrentPlayer() == viewController.getPlayer(i).getLastPosition() && !viewController.getDirection())
-					lblListField.get(convertion2(viewController.getPlayer(i).getLastPosition())).setIcon(new ImageIcon("immagini/"+viewController.getPlayer(i).getLastPosition()+".png"));
-				else if(viewController.thereArePlayer(viewController.getPlayer(i).getLastPosition())) 
-					lblListField.get(convertion2(viewController.getPlayer(i).getLastPosition())).setIcon(new ImageIcon("immagini/personaggi/"+controlSlot(viewController.getPlayer(i).getLastPosition(),0)+".png"));
-				else
-					lblListField.get(convertion2(viewController.getPlayer(i).getLastPosition())).setIcon(new ImageIcon("immagini/"+viewController.getPlayer(i).getLastPosition()+".png"));
-			}
+			lblListField.get(convertion2(viewController.getPlayer(i).getPosition())).setIcon(new ImageIcon("immagini/personaggi/"+controlSlot(viewController.getPlayer(i).getPosition(),0)+".png"));
+			if(viewController.thereArePlayer(viewController.getPlayer(i).getLastPosition())) 
+				lblListField.get(convertion2(viewController.getPlayer(i).getLastPosition())).setIcon(new ImageIcon("immagini/personaggi/"+controlSlot(viewController.getPlayer(i).getLastPosition(),0)+".png"));
+			else
+				lblListField.get(convertion2(viewController.getPlayer(i).getLastPosition())).setIcon(new ImageIcon("immagini/"+viewController.getPlayer(i).getLastPosition()+".png"));
 		}
 	}
 	// Getsisce le immagini nel intero movimento di una pedina 

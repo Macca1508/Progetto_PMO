@@ -8,20 +8,19 @@ public class SwapActionSlot extends SlotImp implements ActionSlot{
 	public SwapActionSlot(int slotName) {
 		super(slotName);
 	}
-	public void action(PieceImp p) {
+	public void action(PieceImp piece) {
 		int a,b;
-		System.out.println(p.getPosition());
-		a = p.getPosition();
-		p.setPosition(target.getPosition());
-		System.out.println(p.getPosition());
+		a = piece.getPosition();
+		piece.setPosition(target.getPosition());
 		target.setPosition(a);
-		b = p.getLastPosition();
-		p.setLastPosition(a);
+		b = piece.getLastPosition();
+		piece.setLastPosition(a);
 		target.setLastPosition(b);
+		
 	}
 	// Genera la stringa del pop-up
-	public String message() {
-		return " cambierà la posione con "+ target.getName();
+	public String message(PieceImp piece) {
+		return piece.getName()+" cambierà la posione con "+ target.getName();
 	}
 	
 	public void setTarget(PieceImp p) {
