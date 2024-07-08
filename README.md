@@ -16,6 +16,8 @@ Il progetto consiste nell'implementazione del gioco dell'oca.
  - Al inizio del proprio turno i giocatori potranno lanciare i dati e muoversi di conseguenza.
  - Durante la partita i giocatori possono finire su diverse caselle azione,ognuna delle quali
    col proprio effetto, per rendere la partita più movimentata.
+ - Dal raggiungimento della casella 55 da parte di uno dei giocatori verrà attivata un'entità
+   in grado di scatenare eventi casuali che scombussoleranno la partita
  - La partita terminerà quando un giocatore si fermerà precisamente sull'ultima casella.
 
  - E' previsto l'utilizzo di un'interfaccia grafica (GUI).
